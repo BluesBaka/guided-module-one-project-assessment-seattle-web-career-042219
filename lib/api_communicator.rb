@@ -13,15 +13,25 @@ require 'pry'
 #   end
 #   character_films
 # end
-#
+def get_questions_answers_from_api
+  questions_hash = JSON.parse(RestClient.get("https://opentdb.com/api.php?amount=5&type=multiple"))
+  results = questions_hash["results"]
+  results.each do |key, value|
+    if key = "question"
+      puts value
+      binding.pry
+    end
+  end
+  #binding.pry
+end
+
 # def get_character_movies_from_api(character_name)
 #   #make the web request
-#   response_hash = JSON.parse(RestClient.get('http://www.swapi.co/api/people/'))
-#   results = response_hash["results"]
-#   character_films = helper_get_character_films(results, character_name)
-#   character_films.map do |request|
-#     JSON.parse(RestClient.get(request))
-#   end
+#
+#   # character_films = helper_get_character_films(results, character_name)
+#   # character_films.map do |request|
+#   #   JSON.parse(RestClient.get(request))
+#   # end
 # end
 
 
@@ -46,13 +56,11 @@ require 'pry'
 #   end
 # end
 
-# def show_character_movies(character)
-#   films = get_character_movies_from_api(character)
-#   print_movies(films)
-# end
-def show_questions_and_answers
-  puts "Hit Q and A method"
+def show_questions
+  questions = get_questions_answers_from_api
+  #puts results
 end
+
 
 ## BONUS
 
