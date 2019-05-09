@@ -2,7 +2,7 @@
 require 'json'
 require 'pry'
 
-puts "Hit api_communicator"
+
 
 # def helper_get_character_films(results, character_name)
 #   character_films = []
@@ -52,7 +52,7 @@ puts "Hit api_communicator"
 # end
 def show_questions_and_answers
   puts "Hit Q and A method"
-end  
+end
 
 ## BONUS
 
