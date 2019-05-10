@@ -28,7 +28,7 @@ def wanna_play
     continue = gets.chomp.downcase
     case continue
     when "y"
-      show_questions
+      show_question
       answer = true
     when "n"
       exit
@@ -52,9 +52,9 @@ end
 def process_user #check if existing user, else create new record
   puts "What's your name?"
   name = gets.chomp.downcase
-  if Users.find_by(first_name: name)
+  if User.find_by(first_name: name)
       puts "Welcome back #{name}!"
     else
-      Users.create(first_name: name)
+      User.create(first_name: name)
   end
 end

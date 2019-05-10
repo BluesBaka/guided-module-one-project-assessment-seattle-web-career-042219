@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
+ActiveRecord::Schema.define(version: 2019_05_09_212235) do
 
-  create_table "questions_answers", force: :cascade do |t|
+  create_table "questions", force: :cascade do |t|
     t.string "category"
     t.string "q_type"
     t.string "difficulty"

@@ -6,4 +6,4 @@ system('clear')
 welcome
 wanna_play
 process_user
-show_questions
+show_question

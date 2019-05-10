@@ -1,4 +1,4 @@
-#require 'rest-client'
+# require 'rest-client'
 require 'json'
 require 'pry'
 
@@ -16,14 +16,18 @@ require 'pry'
 def get_questions_answers_from_api
   questions_hash = JSON.parse(RestClient.get("https://opentdb.com/api.php?amount=5&type=multiple"))
   results = questions_hash["results"]
-  results.each do |key, value|
-    if key = "question"
-      puts value
-      binding.pry
-    end
+  results.collect do |result| 
+    #result['question'] can move this line into create
+    Question.create(question: result['question'],
+      correct_answer: result['correct_answer']
+      )
+    #Question.create(correct_answer: result['correct_answer'])
+
+
   end
-  #binding.pry
 end
+
+#Users.create(first_name: name)
 
 # def get_character_movies_from_api(character_name)
 #   #make the web request
@@ -56,10 +60,29 @@ end
 #   end
 # end
 
-def show_questions
-  questions = get_questions_answers_from_api
-  #puts results
+def show_question
+  counter = 0
+  question_id = Question.first.id
+  rec_id = question_id + counter
+  #   while counter < 5 do
+  question = Question.find(rec_id).question
+      puts question
+      puts ""
+      puts ""
+   show_answers(rec_id,counter)   
+   counter = counter + 1
+  #  #   binding.pry
+    
 end
+
+def show_answers(rec_id,counter)
+  
+  correct_answer = Question.find(rec_id).correct_answer
+  puts "#{counter + 1}. #{correct_answer}"
+
+  user_answer = gets.chomp.downcase
+  #counter = counter + 1
+end 
 
 
 ## BONUS
