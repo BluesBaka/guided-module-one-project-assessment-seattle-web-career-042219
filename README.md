@@ -22,6 +22,6 @@ To uninstall the game enter your terminal and type $ ruby uninstall.rb
 ===============================================================
                        Contributing 
 
-Laura Hoffman - main contributor        Jesse Smokovich
+Laura Hoffman: main contributor        Jesse Smokovich
 
 
