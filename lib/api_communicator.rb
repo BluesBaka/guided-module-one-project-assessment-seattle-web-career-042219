@@ -77,7 +77,7 @@ end
      puts ""
      puts ""
   #   puts "           Total correct answers this session: #{session_tally}"
-#####put the sleep here
+     sleep(2)
      puts ""
      puts ""
      #grand_total = grand_total + session_tally
