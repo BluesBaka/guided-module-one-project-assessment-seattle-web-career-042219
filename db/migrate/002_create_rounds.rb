@@ -4,6 +4,7 @@ class CreateRounds < ActiveRecord::Migration[5.1]
     create_table :rounds do |t|
       t.integer :user_id
       t.integer :question_id
+      t.integer :session_id
     end
   end
 end

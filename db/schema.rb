@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_212235) do
   create_table "rounds", force: :cascade do |t|
     t.integer "user_id"
     t.integer "question_id"
+    t.integer "session_id"
   end
 
   create_table "users", force: :cascade do |t|
