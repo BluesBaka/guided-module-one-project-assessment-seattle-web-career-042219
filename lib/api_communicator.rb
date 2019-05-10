@@ -3,89 +3,94 @@ require 'json'
 require 'pry'
 
 
-
-# def helper_get_character_films(results, character_name)
-#   character_films = []
-#   results.each do |character|
-#     if character["name"].downcase == character_name
-#       character_films = character["films"]
-#     end
-#   end
-#   character_films
-# end
 def get_questions_answers_from_api
-  questions_hash = JSON.parse(RestClient.get("https://opentdb.com/api.php?amount=5&type=multiple"))
+  questions_hash = JSON.parse(RestClient.get("https://opentdb.com/api.php?amount=30&type=multiple"))
   results = questions_hash["results"]
-  results.collect do |result| 
-    #result['question'] can move this line into create
-    Question.create(question: result['question'],
-      correct_answer: result['correct_answer']
+
+  results.collect do |result|
+      result['incorrect_answers'][0]
+      choice_b = result['incorrect_answers'][1]
+      choice_c = result['incorrect_answers'][2]
+      Question.create(
+        question: result['question'],
+        correct_answer: result['correct_answer'],
+        incorrect_answer_1: result['incorrect_answers'][0],
+        incorrect_answer_2: result['incorrect_answers'][1],
+        incorrect_answer_3: result['incorrect_answers'][2]
       )
-    #Question.create(correct_answer: result['correct_answer'])
-
-
   end
 end
 
-#Users.create(first_name: name)
-
-# def get_character_movies_from_api(character_name)
-#   #make the web request
-#
-#   # character_films = helper_get_character_films(results, character_name)
-#   # character_films.map do |request|
-#   #   JSON.parse(RestClient.get(request))
-#   # end
-# end
-
-
-  # iterate over the response hash to find the collection of `films` for the given
-  #   `character`
-  # collect those film API urls, make a web request to each URL to get the info
-  #  for that film
-  # return value of this method should be collection of info about each film.
-  #  i.e. an array of hashes in which each hash reps a given film
-  # this collection will be the argument given to `print_movies`
-  #  and that method will do some nice presentation stuff like puts out a list
-  #  of movies by title. Have a play around with the puts with other info about a given film.
-
-
-# def print_questions(films)
-#   # some iteration magic and puts out the movies in a nice list
-#   films.each do |film|
-#     puts "Star Wars #{film["title"]}, Episode #{film["episode_id"]}"
-#     puts "Directed by #{film["director"]}, Produced by #{film["producer"]}"
-#     puts "Release date: #{film["release_date"]}"
-#     puts
-#   end
-# end
-
-def show_question
-  counter = 0
-  question_id = Question.first.id
-  rec_id = question_id + counter
-  #   while counter < 5 do
-  question = Question.find(rec_id).question
-      puts question
+def show_question(user_id)
+  get_questions_answers_from_api
+  #get a random Record
+  ids = Question.pluck(:id) #get all ids
+  random_id = Question.find(ids.sample).id #grab ramdom Record
+  Round.create(question_id: random_id, user_id: user_id) #record q_id to db
+  question = Question.find(ids.sample).question
+      system('clear')
       puts ""
       puts ""
-   show_answers(rec_id,counter)   
-   counter = counter + 1
-  #  #   binding.pry
-    
+      puts ""
+      puts ""
+      puts ""
+      puts ""
+      puts ""
+      puts ""
+      puts "               #{question}"
+      puts ""
+      puts ""
+      puts ""
+      puts ""
+      puts ""
+      show_answers(random_id)
 end
 
-def show_answers(rec_id,counter)
-  
-  correct_answer = Question.find(rec_id).correct_answer
-  puts "#{counter + 1}. #{correct_answer}"
+ def show_answers(random_id)
+   #need to track id in round
+   #need to randomize presentation of answers
+   correct_answer = Question.find(random_id).correct_answer
+   incorrect_answer_1 = Question.find(random_id).incorrect_answer_1
+   incorrect_answer_2 = Question.find(random_id).incorrect_answer_2
+   incorrect_answer_3 = Question.find(random_id).incorrect_answer_3
 
-  user_answer = gets.chomp.downcase
-  #counter = counter + 1
-end 
+   puts "              A. #{correct_answer}"
+   puts "              B. #{incorrect_answer_1}"
+   puts "              C. #{incorrect_answer_2}"
+   puts "              D. #{incorrect_answer_3}"
 
+   process_answers
+ end
 
-## BONUS
-
-# that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
-# can you split it up into helper methods?
+ def process_answers
+  # grand_total = User.find_by(first_name: laura).total_score
+   #add error checking for invalid responses
+   session_tally = 0
+   user_answer = gets.chomp.upcase
+   if user_answer.include? "A"
+     puts ""
+     puts ""
+     puts ""
+     puts ""
+     puts "           WooHoo! You got it right!"
+    # session_tally = session_tally + 1
+     puts ""
+     puts ""
+  #   puts "           Total correct answers this session: #{session_tally}"
+#####put the sleep here
+     puts ""
+     puts ""
+     #grand_total = grand_total + session_tally
+     #puts "            Your grand total for all time is #{grand_total}"
+   else
+     puts ""
+     puts ""
+     puts ""
+     puts ""
+     puts "           Close, but no cigar.  Better luck next time!"
+     puts ""
+     puts ""
+     puts ""
+     wanna_play
+   end
+ end
